@@ -57,6 +57,12 @@ const projectSchema = mongoose.Schema(
         ref: "Technology",
       },
     ],
+    tasks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Task",
+      },
+    ],
     repository: {
       type: String,
       trim: true,

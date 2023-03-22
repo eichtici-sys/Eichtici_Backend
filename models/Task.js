@@ -1,15 +1,20 @@
 import mongoose from "mongoose";
 
-const technologySchema = mongoose.Schema(
+const taskSchema = mongoose.Schema(
   {
     name: {
       type: String,
       trim: true,
       required: true,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    description: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    state: {
+      type: Boolean,
+      default: false,
     },
     project: {
       type: mongoose.Schema.Types.ObjectId,
@@ -21,6 +26,6 @@ const technologySchema = mongoose.Schema(
   }
 );
 
-const Technology = mongoose.model("Technology", technologySchema);
+const Task = mongoose.model("Task", taskSchema);
 
-export default Technology;
+export default Task;

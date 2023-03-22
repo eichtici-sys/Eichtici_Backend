@@ -1,15 +1,20 @@
-import Technology from "../models/Tecnology.js";
+import Technology from "../models/Technology.js";
 import Project from "../models/Project.js";
 
 const getTecnologies = async (req, res) => {
   const technologies = await Technology.find()
     .where("project")
-    .equals(req.project);
+    .equals(req.project)
+    .populate({
+      path: "project",
+      select: "name",
+    });
   res.json(technologies);
 };
 const newTechnology = async (req, res) => {
   const { project } = req.body;
   const existProject = await Project.findById(project);
+  console.log(existProject);
 
   if (!existProject) {
     const error = new Error("Project does not exist");

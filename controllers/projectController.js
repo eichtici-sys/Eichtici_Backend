@@ -17,7 +17,7 @@ const getProjects = async (req, res) => {
   res.json(projects);
 };
 
-const newProject = async (req, res) => {  
+const newProject = async (req, res) => {
   const resultUpload = await cloudinary.v2.uploader.upload(req.file.path, {
     folder: "eichticiImages",
     use_filename: true,
@@ -46,14 +46,27 @@ const newProject = async (req, res) => {
 
 const getProject = async (req, res) => {
   const { id } = req.params;
-  const project = await Project.findById(id).populate({
-    path: "creator",
-    select: "userProfile",
-    populate: {
-      path: "userProfile",
-      select: "name",
-    },
-  });
+  const project = await Project.findById(id)
+    .populate({
+      path: "creator",
+      select: "userProfile",
+      populate: {
+        path: "userProfile",
+        select: "name",
+      },
+    })
+    .populate({
+      path: "technologies",
+      select: "-__v",
+      populate: {
+        path: "project",
+        select: "name",
+      },
+    })
+    .populate({
+      path: "tasks",
+      select: "-__v",
+    });
   if (!project) {
     const error = new Error("Not found");
     return res.status(404).json({ msg: error.message });
@@ -145,8 +158,7 @@ const deleteProject = async (req, res) => {
   }
 
   try {
-    const { result } = await cloudinary.v2.uploader.destroy(project.public_id);
-    console.log(result);
+    const { result } = await cloudinary.v2.uploader.destroy(project.public_id);    
     if (result === "not found") {
       const error = new Error("Please provide correct public_id");
       return res.status(401).json({ msg: error.message });

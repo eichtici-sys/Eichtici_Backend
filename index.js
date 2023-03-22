@@ -17,6 +17,8 @@ import serviceDescriptionRoutes from "./routes/serviceDescriptionRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
 import technologyRoutes from "./routes/technologyRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
+import cvRoutes from "./routes/cvRoutes.js";
 
 const app = express();
 
@@ -69,6 +71,8 @@ app.use("/api/services-descriptions", serviceDescriptionRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/technologies", technologyRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/cvs", cvRoutes);
 
 const PORT = process.env.PORT || 4000;
 
