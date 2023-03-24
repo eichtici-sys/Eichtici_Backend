@@ -27,6 +27,7 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("./public/uploads"));
 
 dotenv.config();
 
@@ -57,7 +58,9 @@ const storage = multer.diskStorage({
     cb(null, new Date().getTime() + path.extname(file.originalname));
   },
 });
-app.use(multer({ storage }).single("Image"));
+app.use(
+  multer({ storage, limits: { fieldSize: 25 * 1024 * 1024 } }).single("Image")
+);
 
 //Routing
 app.use("/api/users", userRoutes);

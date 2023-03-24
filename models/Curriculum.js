@@ -16,14 +16,23 @@ const cvSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    fileURL: {
+    originalName: {
       type: String,
       trim: true,
       required: true,
     },
-    public_id: {
+    fileName: {
       type: String,
       trim: true,
+      required: true,
+    },
+    pathFile: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    dataPreview: {
+      type: String,
       required: true,
     },
     visible: {
