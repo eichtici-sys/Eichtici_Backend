@@ -3,7 +3,7 @@ import Profile from "../models/Profile.js";
 import fs from "fs-extra";
 
 const getProfiles = async (req, res) => {
-  const profiles = await Profile.find().where("user").equals(req.user);
+  const profiles = await Profile.findOne().where("user").equals(req.user);
   res.json(profiles);
 };
 
@@ -23,7 +23,7 @@ const getProfile = async (req, res) => {
   res.json(profile);
 };
 
-const editProfile = async (req, res) => {  
+const editProfile = async (req, res) => {
   const { id } = req.params;
   const profile = await Profile.findById(id);
   if (!profile) {
@@ -52,17 +52,22 @@ const editProfile = async (req, res) => {
     });
     profile.imageURL = newImageUpload.url;
     profile.public_id = newImageUpload.public_id;
+    try {
+      const profileStore = await profile.save();
+      await fs.unlink(req.file.path);
+      res.json(profileStore);
+    } catch (error) {
+      console.log(error);
+    }
   } else {
     profile.imageURL = profile.imageURL;
     profile.public_id = profile.public_id;
-  }
-
-  try {
-    const profileStore = await profile.save();
-    await fs.unlink(req.file.path);
-    res.json(profileStore);
-  } catch (error) {
-    console.log(error);
+    try {
+      const profileStore = await profile.save();
+      res.json(profileStore);
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 

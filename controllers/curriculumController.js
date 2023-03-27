@@ -19,7 +19,6 @@ const getCvs = async (req, res) => {
 };
 
 const newCv = async (req, res) => {
-
   const cv = new Curriculum(req.body);
   cv.originalName = req.file.originalname;
   cv.fileName = req.file.filename;
@@ -42,6 +41,20 @@ const newCv = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const getCV = async (req, res) => {
+  const { id } = req.params;
+  const cv = await Curriculum.findById(id);
+  if (!cv) {
+    const error = new Error("Not found");
+    return res.status(404).json({ msg: error.message });
+  }
+  if (cv.user.toString() !== req.user._id.toString()) {
+    const error = new Error("Invalid action");
+    return res.status(401).json({ msg: error.message });
+  }
+  res.json(cv);
 };
 
 const deleteCv = async (req, res) => {
@@ -116,4 +129,4 @@ const downloadCv = async (req, res) => {
   }
 };
 
-export { getCvs, newCv, deleteCv, changeStateCv, downloadCv };
+export { getCvs, newCv, deleteCv, changeStateCv, downloadCv, getCV };
