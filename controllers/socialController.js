@@ -1,5 +1,13 @@
 import SocialNetwork from "../models/SocialNetwork.js";
 
+const getSocialsLanding = async (req, res) => {
+  const socials = await SocialNetwork.find()
+    .where("user")
+    .equals(process.env.ID_ADMIN)
+    .select("name link icon");
+  res.json(socials);
+};
+
 const getSocials = async (req, res) => {
   const socials = await SocialNetwork.find()
     .where("user")
@@ -103,4 +111,11 @@ const deleteSocial = async (req, res) => {
   }
 };
 
-export { getSocials, newSocial, getSocial, editSocial, deleteSocial };
+export {
+  getSocials,
+  newSocial,
+  getSocial,
+  editSocial,
+  deleteSocial,
+  getSocialsLanding,
+};

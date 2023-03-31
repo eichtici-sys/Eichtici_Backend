@@ -63,6 +63,11 @@ const projectSchema = mongoose.Schema(
         ref: "Task",
       },
     ],
+    featured: {
+      type: String,
+      required: true,
+      enum: ["Featured", "No Featured"],
+    },
     repository: {
       type: String,
       trim: true,

@@ -1,5 +1,19 @@
 import Service from "../models/Service.js";
 
+const getAllServices = async (req, res) => {
+  const services = await Service.find()
+    .where("user")
+    .equals(process.env.ID_ADMIN)
+    .select("-user -createdAt -updatedAt -__v")
+    .populate({
+      path: "servicesDescriptions",
+      select: "_id description",
+    });
+
+  res.json(services);
+  return;
+};
+
 const getServices = async (req, res) => {
   const services = await Service.find()
     .where("user")
@@ -110,4 +124,11 @@ const deleteService = async (req, res) => {
   }
 };
 
-export { getServices, newService, getService, editService, deleteService };
+export {
+  getServices,
+  newService,
+  getService,
+  editService,
+  deleteService,
+  getAllServices,
+};

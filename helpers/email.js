@@ -47,3 +47,25 @@ export const emailResetPswd = async (data) => {
       `,
   });
 };
+
+export const emailContact = async (data) => {
+  const { name, email, message } = data;
+  var transport = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const info = await transport.sendMail({
+    from: `"Name: ${name} - Landing Page Eichtici Develeper" <${email}>`,
+    to: process.env.EMAIL_ADMIN,
+    subject: `User ${name} wants to contact you`,
+    text: `Eichtici Admin: The user "${name}" wants to contact you.`,
+    html: `<p>${message}</p>
+          <p>Sincerely: ${name}</p>
+    `,
+  });
+};

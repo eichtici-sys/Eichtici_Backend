@@ -1,5 +1,18 @@
 import Level from "../models/Level.js";
 
+const getAllLevels = async (req, res) => {
+  const levels = await Level.find()
+    .where("user")
+    .equals(process.env.ID_ADMIN)
+    .select("-user -createdAt -updatedAt -__v")
+    .populate({
+      path: "skills",
+      select: "_id name scale",
+    });
+
+  res.json(levels);
+  return;
+};
 const getLevels = async (req, res) => {
   const levels = await Level.find()
     .where("user")
@@ -126,4 +139,5 @@ export {
   editLevel,
   deleteLevel,
   getTotalSkills,
+  getAllLevels,
 };

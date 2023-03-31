@@ -1,6 +1,20 @@
-import cloudinary from "cloudinary";
 import Curriculum from "../models/Curriculum.js";
 import fs from "fs-extra";
+
+const downloadLastCV = async (req, res) => {
+  const cvs = await Curriculum.find()
+    .where("user")
+    .equals(process.env.ID_ADMIN)
+    .select("-__v");
+  const cvsFiltered = cvs.filter((cv) => cv.visible === true);
+  const [VisibleCV] = cvsFiltered;
+  const urlDownload = `public/uploads/${VisibleCV.fileName}`;
+  res.download(urlDownload, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
 
 const getCvs = async (req, res) => {
   const cvs = await Curriculum.find()
@@ -129,4 +143,12 @@ const downloadCv = async (req, res) => {
   }
 };
 
-export { getCvs, newCv, deleteCv, changeStateCv, downloadCv, getCV };
+export {
+  getCvs,
+  newCv,
+  deleteCv,
+  changeStateCv,
+  downloadCv,
+  getCV,
+  downloadLastCV,
+};

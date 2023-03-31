@@ -48,16 +48,20 @@ const profileSchema = mongoose.Schema(
     imageURL: {
       type: String,
       trim: true,
-      required: true,      
+      required: true,
     },
     public_id: {
       type: String,
       trim: true,
-      required: true,      
+      required: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+    },
+    edit: {
+      type: Boolean,
+      default: false,
     },
   },
   {

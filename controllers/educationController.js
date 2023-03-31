@@ -1,5 +1,15 @@
 import Education from "../models/Education.js";
 
+const getAllEducations = async (req, res) => {
+  const educations = await Education.find()
+    .where("user")
+    .equals(process.env.ID_ADMIN)
+    .select("-user -createdAt -updatedAt -__V");
+
+  res.json(educations);
+  return;
+};
+
 const getEducations = async (req, res) => {
   const educations = await Education.find()
     .where("user")
@@ -114,4 +124,5 @@ export {
   getEducation,
   editEducation,
   deleteEducation,
+  getAllEducations,
 };

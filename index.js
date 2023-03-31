@@ -19,6 +19,8 @@ import projectRoutes from "./routes/projectRoutes.js";
 import technologyRoutes from "./routes/technologyRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 import cvRoutes from "./routes/cvRoutes.js";
+import mailRoutes from "./routes/mailRoutes.js";
+import aboutRoutes from "./routes/aboutRoutes.js";
 
 const app = express();
 
@@ -76,6 +78,8 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/technologies", technologyRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/cvs", cvRoutes);
+app.use("/api/mails", mailRoutes);
+app.use("/api/abouts", aboutRoutes);
 
 const PORT = process.env.PORT || 4000;
 

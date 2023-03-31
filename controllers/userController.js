@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import Profile from "../models/Profile.js";
+import About from "../models/About.js";
 import generateId from "../helpers/generateId.js";
 import generateJwt from "../helpers/generateJwt.js";
 import { emailRegister, emailResetPswd } from "../helpers/email.js";
@@ -31,13 +32,29 @@ const register = async (req, res) => {
     profile.address = "Av. de Ejemplo";
     profile.numberAd = 1350;
     profile.city = "Your City";
-    profile.imageURL = "";
-    profile.public_id = "";
+    profile.imageURL =
+      "https://res.cloudinary.com/dgdyzgrmi/image/upload/v1680214048/eichticiImages/icon-128x128_uswyjm.png";
+    profile.public_id = "eichticiImages/icon-128x128_uswyjm";
 
     const profileStore = await profile.save();
 
+    const about = new About();
+    about.user = user._id;
+    about.presentation =
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce arcu erat, blandit et mauris in, tempor tempor risus. Quisque quis tempor velit. Suspendisse nec viverra felis. Aliquam velit mi, gravida ut leo eu, egestas suscipit eros.";
+    about.description =
+      "Suspendisse nec viverra felis. Aliquam velit mi, gravida ut leo eu, egestas suscipit eros. Aenean sem justo, sagittis eget malesuada in, sollicitudin a ex. Pellentesque eu est eget sapien consectetur vulputate.";
+    about.imagePresentationURL =
+      "https://res.cloudinary.com/dgdyzgrmi/image/upload/v1680213945/eichticiImages/dev_nkbbaf.png";
+    about.imagePresentation_publicId = "eichticiImages/dev_nkbbaf";
+    about.imageAboutURL =
+      "https://res.cloudinary.com/dgdyzgrmi/image/upload/v1680213945/eichticiImages/dev2_ywgqj3.png";
+    about.imageAbout_publicId = "eichticiImages/dev2_ywgqj3";
+
+    const aboutStore = await about.save();
+
     user.userProfile = profile._id;
-    const userFinal = await user.save()
+    const userFinal = await user.save();
 
     //Send Email
     emailRegister({
@@ -49,6 +66,7 @@ const register = async (req, res) => {
     res.json({
       msg: "User created successfully, check your email to confirm your account",
       profile: profileStore,
+      about: aboutStore,
     });
   } catch (error) {
     console.log(error);

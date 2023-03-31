@@ -2,6 +2,21 @@ import cloudinary from "cloudinary";
 import Project from "../models/Project.js";
 import fs from "fs-extra";
 
+const getAllProjects = async (req, res) => {
+  const projects = await Project.find()
+    .where("creator")
+    .equals(process.env.ID_ADMIN)
+    .select("-creator -createdAt -updatedAt -__v -tasks -phase -priority")
+    .populate({
+      path: "technologies",
+      select: "_id name",
+    });
+  const completed = projects.filter((project) => project.state === "Completed");
+
+  res.json(completed);
+  return;
+};
+
 const getProjects = async (req, res) => {
   const projects = await Project.find()
     .where("creator")
@@ -96,6 +111,7 @@ const editProject = async (req, res) => {
   project.state = req.body.state || project.state;
   project.phase = req.body.phase || project.phase;
   project.priority = req.body.priority || project.priority;
+  project.featured = req.body.featured || project.featured;
   if (req.file !== undefined) {
     const { result } = await cloudinary.v2.uploader.destroy(project.public_id);
 
@@ -158,7 +174,7 @@ const deleteProject = async (req, res) => {
   }
 
   try {
-    const { result } = await cloudinary.v2.uploader.destroy(project.public_id);    
+    const { result } = await cloudinary.v2.uploader.destroy(project.public_id);
     if (result === "not found") {
       const error = new Error("Please provide correct public_id");
       return res.status(401).json({ msg: error.message });
@@ -175,4 +191,11 @@ const deleteProject = async (req, res) => {
   }
 };
 
-export { getProjects, newProject, getProject, editProject, deleteProject };
+export {
+  getProjects,
+  newProject,
+  getProject,
+  editProject,
+  deleteProject,
+  getAllProjects,
+};

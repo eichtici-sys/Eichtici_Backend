@@ -1,5 +1,18 @@
 import Work from "../models/Work.js";
 
+const getAllWorks = async (req, res) => {
+  const works = await Work.find()
+    .where("user")
+    .equals(process.env.ID_ADMIN)
+    .select("-user -createdAt -updatedAt -__v");
+  const first = await Work.findOne()
+    .where("user")
+    .equals(process.env.ID_ADMIN)
+    .select("startYear");
+  res.json({ works, firstWork: first });
+  return;
+};
+
 const getWorks = async (req, res) => {
   const works = await Work.find()
     .where("user")
@@ -101,4 +114,4 @@ const deleteWork = async (req, res) => {
   }
 };
 
-export { getWorks, newWork, getWork, editWork, deleteWork };
+export { getWorks, newWork, getWork, editWork, deleteWork, getAllWorks };
