@@ -48,7 +48,7 @@ const newEmail = async (req, res) => {
     });
 
     res.json({
-      msg: "Email enviado correctamente",
+      msg: "Email sent successfully",
     });
   } catch (error) {
     console.log(error);

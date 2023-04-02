@@ -4,6 +4,7 @@ import About from "../models/About.js";
 import generateId from "../helpers/generateId.js";
 import generateJwt from "../helpers/generateJwt.js";
 import { emailRegister, emailResetPswd } from "../helpers/email.js";
+import { initialProfile, initialAbout } from "../data/initialData.js";
 
 const register = async (req, res) => {
   //Avoid duplicate records
@@ -24,32 +25,32 @@ const register = async (req, res) => {
 
     const profile = new Profile();
     profile.user = user._id;
-    profile.name = "Test";
-    profile.lastname = "Test";
-    profile.gender = "Male";
-    profile.phone = "999999999";
+    profile.name = initialProfile.name;
+    profile.lastname = initialProfile.lastname;
+    profile.gender = initialProfile.gender;
+    profile.phone = initialProfile.phone;
     profile.email = user.email;
-    profile.address = "Av. de Ejemplo";
-    profile.numberAd = 1350;
-    profile.city = "Your City";
-    profile.imageURL =
-      "https://res.cloudinary.com/dgdyzgrmi/image/upload/v1680214048/eichticiImages/icon-128x128_uswyjm.png";
-    profile.public_id = "eichticiImages/icon-128x128_uswyjm";
+    profile.address = initialProfile.address;
+    profile.numberAd = initialProfile.numberAd;
+    profile.city = initialProfile.city;
+    profile.imageURL = initialProfile.imageURL;
+    profile.public_id = initialProfile.public_id;
 
     const profileStore = await profile.save();
 
     const about = new About();
     about.user = user._id;
-    about.presentation =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce arcu erat, blandit et mauris in, tempor tempor risus. Quisque quis tempor velit. Suspendisse nec viverra felis. Aliquam velit mi, gravida ut leo eu, egestas suscipit eros.";
-    about.description =
-      "Suspendisse nec viverra felis. Aliquam velit mi, gravida ut leo eu, egestas suscipit eros. Aenean sem justo, sagittis eget malesuada in, sollicitudin a ex. Pellentesque eu est eget sapien consectetur vulputate.";
-    about.imagePresentationURL =
-      "https://res.cloudinary.com/dgdyzgrmi/image/upload/v1680213945/eichticiImages/dev_nkbbaf.png";
-    about.imagePresentation_publicId = "eichticiImages/dev_nkbbaf";
-    about.imageAboutURL =
-      "https://res.cloudinary.com/dgdyzgrmi/image/upload/v1680213945/eichticiImages/dev2_ywgqj3.png";
-    about.imageAbout_publicId = "eichticiImages/dev2_ywgqj3";
+    about.presentation = initialAbout.presentation;
+    about.description = initialAbout.description;
+    about.resumen = initialAbout.resumen;
+    about.imagePresentationURL = initialAbout.imagePresentationURL;
+    about.imagePresentation_publicId = initialAbout.imagePresentation_publicId;
+    about.imageAboutURL = initialAbout.imageAboutURL;
+    about.imageAbout_publicId = initialAbout.imageAbout_publicId;
+    about.imageResumenURL = initialAbout.imageResumenURL;
+    about.imgResumen_publicid = initialAbout.imgResumen_publicid;
+    about.imageBG_URL = initialAbout.imageBG_URL;
+    about.imgBG_publicid = initialAbout.imgBG_publicid;
 
     const aboutStore = await about.save();
 
